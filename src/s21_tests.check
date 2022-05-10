@@ -1,0 +1,85 @@
+#include <check.h>
+
+#include "s21_calc.h"
+#include "s21_parsing.h"
+#define E 1e-7
+
+#test calc_1
+    ck_assert_double_nan(parsing("7/0","0"));
+
+#test calc_2
+    ck_assert_double_nan(parsing("7/x","0"));
+
+#test calc_3
+    ck_assert_double_nan(parsing("5/(7.5-x)","7.5"));
+
+#test calc_4
+    ck_assert_double_eq(parsing("0/7","0"), 0.0);   
+
+#test calc_5
+    ck_assert_double_eq(parsing("log(10)","0"), 1.0);
+
+#test calc_6
+    double calc = parsing("ln(10)","0");
+    double res = 2.3025850;
+    double result = fabs(calc - res);
+    int prov = 1; 
+    if (result >= E){
+        prov = 0;
+    }
+    ck_assert_int_eq(prov, 1);
+\
+#test calc_7
+    double calc = parsing("cos(90)","0");
+    double res = -0.4480736;
+    double result = fabs(calc - res);
+    int prov = 1; 
+    if (result >= E){
+        prov = 0;
+    }
+    ck_assert_int_eq(prov, 1);
+#test calc_8
+    double calc = parsing("sin(90)","0");
+    double res = 0.8939966;
+    double result = fabs(calc - res);
+    int prov = 1; 
+    if (result >= E){
+        prov = 0;
+    }
+    ck_assert_int_eq(prov, 1);
+
+#test calc_9
+    double calc = parsing("tan(1)","0");
+    double res = 1.5574077;
+    double result = fabs(calc - res);
+    int prov = 1; 
+    if (result >= E){
+        prov = 0;
+    }
+    ck_assert_int_eq(prov, 1);
+
+#test calc_10
+    double calc = parsing("asin(0.5)","0");
+    double res = 0.5235988;
+    double result = fabs(calc - res);
+    int prov = 1; 
+    if (result >= E){
+        prov = 0;
+    }
+    ck_assert_int_eq(prov, 1);
+
+#test calc_11
+    double calc = parsing("acos(0.5)","0");
+    double res = 1.0471976;
+    double result = fabs(calc - res);
+    int prov = 1; 
+    if (result >= E){
+        prov = 0;
+    }
+    ck_assert_int_eq(prov, 1);
+
+#test calc_12
+    ck_assert_double_eq(parsing("4^15", "0"), 1073741824.0);
+
+#test calc_13
+    ck_assert_double_eq(parsing("sqrt(144)", "0"), 12);
