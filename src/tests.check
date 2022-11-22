@@ -1,7 +1,7 @@
 #include <check.h>
 
-#include "s21_calc.h"
-#include "s21_parsing.h"
+#include "calc.h"
+#include "parsing.h"
 #define E 1e-7
 
 #test calc_1

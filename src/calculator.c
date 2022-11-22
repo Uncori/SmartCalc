@@ -2,8 +2,8 @@
 #include <gtk/gtk.h>
 #include <locale.h>
 
-#include "s21_calc.h"
-#include "s21_parsing.h"
+#include "calc.h"
+#include "parsing.h"
 
 typedef struct backpack {
     GtkEntryBuffer *buffer;
@@ -27,7 +27,8 @@ typedef struct drow {
 } st_drow;
 
 static void quit_cb(GtkWindow *window) { gtk_window_close(window); }
-static void delete_text(const GtkWidget *widget, gpointer data) {
+static void delete_text(const GtkWidget *widget, gpointer data)
+{
     if (widget) {
     } else {
     }
@@ -35,7 +36,8 @@ static void delete_text(const GtkWidget *widget, gpointer data) {
     unsigned len = gtk_entry_buffer_get_length(buffer);
     gtk_entry_buffer_delete_text(buffer, len - 1, 1);
 }
-static void add_func(const GtkWidget *widget, gpointer data) {
+static void add_func(const GtkWidget *widget, gpointer data)
+{
     if (widget) {
     } else {
     }
@@ -44,7 +46,8 @@ static void add_func(const GtkWidget *widget, gpointer data) {
     gtk_entry_buffer_insert_text(buffer, gtk_entry_buffer_get_length(buffer),
                                  str, -1);
 }
-static void add_bracket(const GtkWidget *widget, gpointer data) {
+static void add_bracket(const GtkWidget *widget, gpointer data)
+{
     if (widget) {
     } else {
     }
@@ -52,7 +55,8 @@ static void add_bracket(const GtkWidget *widget, gpointer data) {
     gtk_entry_buffer_insert_text(buffer, gtk_entry_buffer_get_length(buffer),
                                  "(", -1);
 }
-static void delete_all_text(const GtkWidget *widget, gpointer data) {
+static void delete_all_text(const GtkWidget *widget, gpointer data)
+{
     if (widget) {
     } else {
     }
@@ -62,7 +66,8 @@ static void delete_all_text(const GtkWidget *widget, gpointer data) {
                                            gtk_entry_buffer_get_length(buffer));
     }
 }
-static void add_pi(const GtkWidget *widget, gpointer data) {
+static void add_pi(const GtkWidget *widget, gpointer data)
+{
     if (widget) {
     } else {
     }
@@ -70,7 +75,8 @@ static void add_pi(const GtkWidget *widget, gpointer data) {
     gtk_entry_buffer_insert_text(buffer, gtk_entry_buffer_get_length(buffer),
                                  "3.1415926", -1);
 }
-static void add_exp(const GtkWidget *widget, gpointer data) {
+static void add_exp(const GtkWidget *widget, gpointer data)
+{
     if (widget) {
     } else {
     }
@@ -79,30 +85,31 @@ static void add_exp(const GtkWidget *widget, gpointer data) {
                                  "2.7182818", -1);
 }
 static void draw_func(const GtkDrawingArea *drawing_area, cairo_t *cr,
-                      int width, int height, gpointer data) {
+                      int width, int height, gpointer data)
+{
     if (drawing_area) {
     } else {
     }
 
     st_drow *stab = (st_drow *)data;
 
-    cairo_set_source_rgb(cr, 0, 0, 0);     // color
-    cairo_set_line_width(cr, 0.5);         // shirina
-    cairo_move_to(cr, 0, height / 2);      // kuda postapit
-    cairo_line_to(cr, width, height / 2);  // do kude
+    cairo_set_source_rgb(cr, 0, 0, 0);    // color
+    cairo_set_line_width(cr, 0.5);        // shirina
+    cairo_move_to(cr, 0, height / 2);     // kuda postapit
+    cairo_line_to(cr, width, height / 2); // do kude
     cairo_move_to(cr, width / 2, 0);
     cairo_line_to(cr, width / 2, height);
     GtkEntryBuffer *buffer_str =
         gtk_entry_get_buffer(GTK_ENTRY(stab->buffer_str));
     char *str = (char *)gtk_entry_buffer_get_text(buffer_str);
-    cairo_stroke(cr);  // risovat'
+    cairo_stroke(cr); // risovat'
 
     // double step = stab->x / 10000;
     char *pars_x = (char *)calloc(MAX_LINE, sizeof(char));
     cairo_set_source_rgb(cr, 0, 0, 0.1);
 
     cairo_translate(cr, width / 2, height / 2);
-    cairo_scale(cr, 3, 3);  // mashtab
+    cairo_scale(cr, 3, 3); // mashtab
     cairo_set_line_width(cr, 1);
     for (double i = -stab->x; i < stab->x; i += 0.1) {
         snprintf(pars_x, MAX_LINE, "%lf", i);
@@ -113,10 +120,11 @@ static void draw_func(const GtkDrawingArea *drawing_area, cairo_t *cr,
     }
     free(pars_x);
 
-    cairo_stroke(cr);  // risovat'
+    cairo_stroke(cr); // risovat'
 }
 
-static void open_window(const GtkWidget *widget, gpointer data) {
+static void open_window(const GtkWidget *widget, gpointer data)
+{
     if (widget) {
     } else {
     }
@@ -151,7 +159,8 @@ static void open_window(const GtkWidget *widget, gpointer data) {
                                    NULL);
     gtk_widget_show(window);
 }
-static void swap(const GtkWidget *widget, gpointer data) {
+static void swap(const GtkWidget *widget, gpointer data)
+{
     if (widget) {
     } else {
     }
@@ -169,7 +178,8 @@ static void swap(const GtkWidget *widget, gpointer data) {
     gtk_entry_buffer_set_text(buffer, res, strlen(res));
     free(res);
 }
-static void open_window_x(const GtkWidget *widget, gpointer data) {
+static void open_window_x(const GtkWidget *widget, gpointer data)
+{
     if (widget) {
     } else {
     }
@@ -210,7 +220,8 @@ static void open_window_x(const GtkWidget *widget, gpointer data) {
 
     gtk_widget_show(window);
 }
-static void find_x(const GtkWidget *widget, gpointer data) {
+static void find_x(const GtkWidget *widget, gpointer data)
+{
     if (widget) {
     } else {
     }
@@ -258,7 +269,8 @@ static void find_x(const GtkWidget *widget, gpointer data) {
         free(res);
     }
 }
-static void activate(GtkApplication *app, gpointer user_data) {
+static void activate(GtkApplication *app, gpointer user_data)
+{
     if (user_data) {
     } else {
     }
@@ -421,7 +433,8 @@ static void activate(GtkApplication *app, gpointer user_data) {
     gtk_widget_show(window);
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
     GtkApplication *app;
     int status;
 

@@ -1,4 +1,4 @@
-SRCS = s21_calc.c s21_parsing.c s21_stack.c
+SRCS = calc.c parsing.c stack.c
 	
 OBJS = ${SRCS:.c=.o}
 CC = gcc
@@ -6,29 +6,29 @@ CFLAGS = -Wall -Werror -Wextra -std=c11 -D_GNU_SOURCE -lm
 GTKFlagOpen = `pkg-config --cflags gtk4`
 GTKFlagClose = `pkg-config --libs gtk4` 
 
-PACKAGE = s21_smart_calc
+PACKAGE = smart_calc
 VERSION = `date +"%Y.%m.%d"`
 ARCHIVE = $(PACKAGE)-$(VERSION)
 
-all: clean s21_smart_calculator checks tests
+all: clean smart_calculator checks tests
 
 
-s21_smart_calculator: ${SRCS}
-	${CC} ${CFLAGS} ${GTKFlagOpen} -o s21_smart_calculator ${SRCS} s21_calculator.c ${GTKFlagClose} 
+smart_calculator: ${SRCS}
+	${CC} ${CFLAGS} ${GTKFlagOpen} -o smart_calculator ${SRCS} calculator.c ${GTKFlagClose} 
 
 
 tests:
-	${CC} ${CFLAGS} s21_tests.c ${SRCS} -lcheck -o tests
+	${CC} ${CFLAGS} tests.c ${SRCS} -lcheck -o tests
 	./tests
 
 gcov_report:
-	@gcc --coverage s21_tests.c -lcheck ${SRCS} -o unit-test
+	@gcc --coverage tests.c -lcheck ${SRCS} -o unit-test
 	@./unit-test
 	@lcov -t "test" -o test.info -c -d .
 	@genhtml -o report test.info
 	
 clean:
-	@/bin/rm -rf *.o *.a *.out *.tar tests s21_smart_calculator unit-test *.gcno *gcda report *.info main
+	@/bin/rm -rf *.o *.a *.out *.tar tests smart_calculator unit-test *.gcno *gcda report *.info main
 
 checks: cppcheck style leaks
 
@@ -42,9 +42,9 @@ leaks: tests
 	CK_FORK=no leaks --atExit -- ./tests
 	
 
-install: s21_smart_calculator
+install: smart_calculator
 	@mkdir ~/SmartCalc_v1.0
-	@install ./s21_smart_calculator ~/SmartCalc_v1.0
+	@install ./smart_calculator ~/SmartCalc_v1.0
 uninstall:
 	@rm -Rf ~/SmartCalc_v1.0
 dvi:
